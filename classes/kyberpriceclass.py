@@ -29,6 +29,6 @@ class kyberprice:
 		price = str(data[0]/multiplier)
 		afterslippage = str((data[1]/multiplier)*int(useramount))
 		output = str(useramount) + " " + source + " after slippage will get " + afterslippage + " " + destination
-		return output
+		return afterslippage
 
 

@@ -1,46 +1,52 @@
 import requests, logging, json, os, time, sys
 from web3 import Web3
+sys.path.append("./classes")
 
-tokens = json.load(open('abi/kyber_currencies.json', 'r'))["data"]
-tokenarray = {}
-for i in tokens: tokenarray[i["symbol"].lower()] = (Web3.toChecksumAddress(i["address"]), i["decimals"])
-#print(tokenarray)	
-
-web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
-erc20abi = json.load(open('abi/erc20.json', 'r'))
-
-
-kyberrateabi = json.load(open('abi/KyberNetworkProxy.json', 'r'))
-kyberratecontract = Web3.toChecksumAddress('0x9AAb3f75489902f3a48495025729a0AF77d4b11e')
-kyberexchangerate = web3.eth.contract(abi=kyberrateabi, address=kyberratecontract)
-
-#for item in dir(kyberexchangerate): print(item) # inspect properties and methods of web3 contract object
+from kyberpriceclass import kyberprice
+from uniswappriceclass import uniswapprice
 
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-pairs = ["pax dai", "pax usdc", "pax usdt", "dai pax", "dai usdc", "dai usdt"] 
+pairs = ["dai usdt"] 
+
 def main():
-	amount = Web3.toWei(sys.argv[1], 'ETHER')
-#while True:
-	for x in range(5):
-		for pair in pairs:
-			coin = pair.split(" ")
-			coin1 = coin[0]
-			coin2 = coin[1]
+	while True:
+		source = "dai" # sys.argv[1]
+		destination = "usdc" # sys.argv[2]
+		amount = 10000 # sys.argv[3]
+		kyber = kyberprice.main(source, destination, amount)
+		uniswap = uniswapprice.main(source, destination, amount)
+
+		kybercheck = kyberprice.main(source, destination, round(float(uniswap)))
+		uniswapcheck = uniswapprice.main(source, destination, round(float(kyber)))
+		
+		text1 = "selling " + str(amount) + " " + source +  " on kyber gets " + str(kyber) + " " + destination
+		text2 = "selling " + str(amount) + " " + source +  " on uniswap gets " + str(uniswap) + " " + destination
+		text3 = "selling " + str(kyber) + " " + destination +  " on uniswap gets " + str(uniswapcheck) + " " + source	
+		text4 = "selling " + str(uniswap) + " " + destination +  " on kyber gets " + str(kybercheck) + " " + source
+		
+		kyberarbitrage = "False"
+		uniswaparbitrage = "False"
+		if kybercheck < uniswap:
+			kyberarbitrage = "True"
+		if uniswapcheck < kyber:
+			uniswaparbitrage = "True"
 			
-			data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
-			if float(data[0]) != float(0.0):
-				print(amount/10**18, coin1, coin2)
-				print(data)
-			#time.sleep(1)
-		amount = amount * 10
-
-
-
-def getkyberprice(token1address, token2address, amount):
-	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})
-	return (expectedreturn[0]/10**18,expectedreturn[1]/10**18)
-
+		text5 = "is " + uniswapcheck + " greater than " + str(amount) + "? " + kyberarbitrage
+		text6 = "is " + kybercheck + " greater than " + str(amount) + "? " + uniswaparbitrage
+		
+		print(text1)
+		print(text2)
+		print(text3)
+		print(text4)	
+		print(text5)
+		print(text6)
+		
+		if uniswaparbitrage == "True" or kyberarbitrage  == "True":
+			break
+		
+		
+	
 if __name__ == '__main__':
     main()

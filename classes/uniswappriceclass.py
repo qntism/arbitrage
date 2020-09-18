@@ -31,7 +31,7 @@ class uniswapprice:
 		data = getuniswapprice(source, destination, amount)
 		afterslippage = str(data/10**6)
 		output = str(useramount) + " " + source + " after slippage will get " + afterslippage + " " + destination
-		return output
+		return afterslippage
 
 
 
