@@ -19,7 +19,7 @@ kyberexchangerate = web3.eth.contract(abi=kyberrateabi, address=kyberratecontrac
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-amount = Web3.toWei(sys.argv[1], 'ETHER')
+amount = Web3.toWei(sys.argv[3], 'ETHER')
 
 def main():
 	multiplier =(tokenarray[sys.argv[1]][1])
