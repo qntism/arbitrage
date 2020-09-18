@@ -19,18 +19,22 @@ kyberexchangerate = web3.eth.contract(abi=kyberrateabi, address=kyberratecontrac
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-stablecoinsfull = ["usdt", "usdc", "tusd", "dai", "busd", "husd", "pax"]
-stablecoins = ["pax", "usdc"]
-amount = Web3.toWei(sys.argv[1], 'ETHER')
-
+pairs = ["pax dai", "pax usdc", "pax usdt", "dai pax", "dai usdc", "dai usdt"] 
 def main():
-	while True:
-		coin1 = stablecoins[0]
-		coin2 = stablecoins[1]
-		print(sys.argv[1], coin1, coin2)
-		data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
-		print(data)
-		time.sleep(1)
+	amount = Web3.toWei(sys.argv[1], 'ETHER')
+#while True:
+	for x in range(5):
+		for pair in pairs:
+			coin = pair.split(" ")
+			coin1 = coin[0]
+			coin2 = coin[1]
+			
+			data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
+			if float(data[0]) != float(0.0):
+				print(amount/10**18, coin1, coin2)
+				print(data)
+			#time.sleep(1)
+		amount = amount * 10
 
 
 
