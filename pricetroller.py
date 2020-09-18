@@ -19,16 +19,24 @@ kyberexchangerate = web3.eth.contract(abi=kyberrateabi, address=kyberratecontrac
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-amount = Web3.toWei(sys.argv[1], 'ETHER')
+stablecoins = ["usdt", "usdc", "tusd", "dai", "busd", "husd", "pax"]
 
 def main():
-	multiplier =(tokenarray[sys.argv[1]][1])
-	data = getkyberprice(tokenarray[sys.argv[1]][0], tokenarray[sys.argv[2]][0], amount)
-	price = str(data[0]/multiplier)
-	afterslippage = str(data[1]/multiplier)
-	output = sys.argv[3] + " " + sys.argv[1] + " is " + price + " " + sys.argv[2] + " and slippage makes it " + afterslippage
-	print(output)
-	time.sleep(1)
+	for coin1 in stablecoins:
+		for coin2 in stablecoins:
+			if coin1 != coin2:
+				amount = Web3.toWei(sys.argv[1], 'ETHER')
+				multiplier1 =(tokenarray[coin1][1])
+				multiplier2 =(tokenarray[coin2][1])
+				print(tokenarray[coin1][0], tokenarray[coin2][0])
+				try:
+					data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
+					print(data)
+				except:pass
+
+		
+
+
 
 def getkyberprice(token1address, token2address, amount):
 	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})
