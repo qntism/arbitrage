@@ -25,10 +25,9 @@ def main():
 	multiplier =(tokenarray[sys.argv[1]][1])
 	data = getkyberprice(tokenarray[sys.argv[1]][0], tokenarray[sys.argv[2]][0], amount)
 	price = str(data[0]/multiplier)
-	afterslippage = str(data[1]/multiplier)
-	output = sys.argv[3] + " " + sys.argv[1] + " is " + price + " " + sys.argv[2] + " and slippage makes it " + afterslippage
+	afterslippage = str((data[1]/multiplier)*int(sys.argv[3]))
+	output = sys.argv[3] + " " + sys.argv[1] + " after slippage will get " + afterslippage + " " + sys.argv[2]
 	print(output)
-	time.sleep(1)
 
 def getkyberprice(token1address, token2address, amount):
 	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})
