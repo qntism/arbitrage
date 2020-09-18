@@ -3,7 +3,7 @@ from web3 import Web3
 
 tokens = json.load(open('abi/kyber_currencies.json', 'r'))["data"]
 tokenarray = {}
-for i in tokens: tokenarray[i["symbol"].lower()] = (Web3.toChecksumAddress(i["address"]), 10**i["decimals"])
+for i in tokens: tokenarray[i["symbol"].lower()] = (Web3.toChecksumAddress(i["address"]), i["decimals"])
 #print(tokenarray)	
 
 web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
@@ -19,22 +19,18 @@ kyberexchangerate = web3.eth.contract(abi=kyberrateabi, address=kyberratecontrac
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-stablecoins = ["usdt", "usdc", "tusd", "dai", "busd", "husd", "pax"]
+stablecoinsfull = ["usdt", "usdc", "tusd", "dai", "busd", "husd", "pax"]
+stablecoins = ["usdt", "usdc"]
 
 def main():
-	for coin1 in stablecoins:
-		for coin2 in stablecoins:
-			if coin1 != coin2:
-				amount = Web3.toWei(sys.argv[1], 'ETHER')
-				multiplier1 =(tokenarray[coin1][1])
-				multiplier2 =(tokenarray[coin2][1])
-				print(tokenarray[coin1][0], tokenarray[coin2][0])
-				try:
-					data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
-					print(data)
-				except:pass
-
-		
+	while True:
+		coin1 = stablecoins[0]
+		coin2 = stablecoins[1]
+		amount = int(sys.argv[1])
+		print(coin1, coin2)
+		data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
+		print(data)
+		time.sleep(1)
 
 
 
