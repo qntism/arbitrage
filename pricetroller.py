@@ -20,14 +20,14 @@ ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
 stablecoinsfull = ["usdt", "usdc", "tusd", "dai", "busd", "husd", "pax"]
-stablecoins = ["usdt", "usdc"]
+stablecoins = ["pax", "usdc"]
+amount = Web3.toWei(sys.argv[1], 'ETHER')
 
 def main():
 	while True:
 		coin1 = stablecoins[0]
 		coin2 = stablecoins[1]
-		amount = int(sys.argv[1])
-		print(coin1, coin2)
+		print(sys.argv[1], coin1, coin2)
 		data = getkyberprice(tokenarray[coin1][0], tokenarray[coin2][0], amount)
 		print(data)
 		time.sleep(1)
@@ -36,7 +36,7 @@ def main():
 
 def getkyberprice(token1address, token2address, amount):
 	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})
-	return expectedreturn
+	return (expectedreturn[0]/10**18,expectedreturn[1]/10**18)
 
 if __name__ == '__main__':
     main()
