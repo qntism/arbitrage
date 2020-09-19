@@ -14,7 +14,7 @@ def main():
 	while True:
 		source = "dai" # sys.argv[1]
 		destination = "usdc" # sys.argv[2]
-		amount = 10000 # sys.argv[3]
+		amount = sys.argv[1]
 		kyber = kyberprice.main(source, destination, amount)
 		uniswap = uniswapprice.main(source, destination, amount)
 
@@ -28,9 +28,9 @@ def main():
 		
 		kyberarbitrage = "False"
 		uniswaparbitrage = "False"
-		if kybercheck > 10000:
+		if kybercheck > float(amount):
 			kyberarbitrage = "True"
-		if uniswapcheck > 10000:
+		if uniswapcheck > float(amount):
 			uniswaparbitrage = "True"
 			
 		text5 = "is " + str(uniswapcheck) + " greater than " + str(amount) + "? " + kyberarbitrage

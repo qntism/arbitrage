@@ -8,12 +8,10 @@ from uniswappriceclass import uniswapprice
 source = "dai" # sys.argv[1]
 destination = "usdc" # sys.argv[2]
 
-#source = "usdc" # sys.argv[1]
-#destination = "dai" # sys.argv[2]
 
-amount = 10000 # sys.argv[3]
+amount = 100
+ # sys.argv[3]
 kyberFirst = kyberprice.main(source, destination, amount)
 uniswapFirst = uniswapprice.main(source, destination, amount)
-
-print("uniswap price ", str(uniswapFirst))
 print("kyber price ", str(kyberFirst))
+print("uniswap price ", str(uniswapFirst))

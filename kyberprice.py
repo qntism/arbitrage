@@ -1,9 +1,11 @@
+#this uses the kyber smart contract to find the exchange rate on kyber from one token to another
+
 import requests, logging, json, os, time, sys
 from web3 import Web3
 
 tokens = json.load(open('abi/kyber_currencies.json', 'r'))["data"]
 tokenarray = {}
-for i in tokens: tokenarray[i["symbol"].lower()] = (Web3.toChecksumAddress(i["address"]), 10**i["decimals"])
+for i in tokens: tokenarray[i["symbol"].lower()] = (Web3.toChecksumAddress(i["address"]), i["decimals"])
 #print(tokenarray)	
 
 web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
@@ -22,16 +24,15 @@ baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e
 amount = Web3.toWei(sys.argv[3], 'ETHER')
 
 def main():
-	multiplier =(tokenarray[sys.argv[1]][1])
-	data = getkyberprice(tokenarray[sys.argv[1]][0], tokenarray[sys.argv[2]][0], amount)
-	price = str(data[0]/multiplier)
-	afterslippage = str((data[1]/multiplier)*int(sys.argv[3]))
-	output = sys.argv[3] + " " + sys.argv[1] + " after slippage will get " + afterslippage + " " + sys.argv[2]
+	afterslippage = getkyberprice(tokenarray[sys.argv[1]][0], tokenarray[sys.argv[2]][0], amount)
+	output = sys.argv[3] + " " + sys.argv[1] + " after slippage will get " + str(afterslippage) + " " + sys.argv[2]
 	print(output)
 
 def getkyberprice(token1address, token2address, amount):
-	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})
-	return expectedreturn
+	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})[0]
+	return (expectedreturn/10**18)*int(sys.argv[3])
 
 if __name__ == '__main__':
     main()
+
+
