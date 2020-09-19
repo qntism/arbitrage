@@ -18,8 +18,8 @@ def main():
 		kyber = kyberprice.main(source, destination, amount)
 		uniswap = uniswapprice.main(source, destination, amount)
 
-		kybercheck = kyberprice.main(source, destination, round(float(uniswap)))
-		uniswapcheck = uniswapprice.main(source, destination, round(float(kyber)))
+		kybercheck = float(kyberprice.main(source, destination, round(float(uniswap))))
+		uniswapcheck = float(uniswapprice.main(source, destination, round(float(kyber))))
 		
 		text1 = "selling " + str(amount) + " " + source +  " on kyber gets " + str(kyber) + " " + destination
 		text2 = "selling " + str(amount) + " " + source +  " on uniswap gets " + str(uniswap) + " " + destination
@@ -28,13 +28,13 @@ def main():
 		
 		kyberarbitrage = "False"
 		uniswaparbitrage = "False"
-		if kybercheck < uniswap:
+		if kybercheck > 10000:
 			kyberarbitrage = "True"
-		if uniswapcheck < kyber:
+		if uniswapcheck > 10000:
 			uniswaparbitrage = "True"
 			
-		text5 = "is " + uniswapcheck + " greater than " + str(amount) + "? " + kyberarbitrage
-		text6 = "is " + kybercheck + " greater than " + str(amount) + "? " + uniswaparbitrage
+		text5 = "is " + str(uniswapcheck) + " greater than " + str(amount) + "? " + kyberarbitrage
+		text6 = "is " + str(kybercheck) + " greater than " + str(amount) + "? " + uniswaparbitrage
 		
 		print(text1)
 		print(text2)
