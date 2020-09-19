@@ -24,12 +24,10 @@ class kyberprice:
 		#print(tokenarray)		
 
 		def getkyberprice(token1address, token2address, amount):
-			expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})[1]
-
-			return expectedreturn/10**18
+			expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})[0]
+			return (expectedreturn/10**18)*int(useramount)
 
 		afterslippage = getkyberprice(tokenarray[source][0], tokenarray[destination][0], amount)
 		output = str(useramount) + " " + source + " after slippage will get " + str(afterslippage) + " " + destination
-		return afterslippage*useramount
-
+		return afterslippage
 
