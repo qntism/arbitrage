@@ -15,3 +15,4 @@ kyberFirst = kyberprice.main(source, destination, amount)
 uniswapFirst = uniswapprice.main(source, destination, amount)
 print("kyber price ", str(kyberFirst))
 print("uniswap price ", str(uniswapFirst))
+#Need to calculate in liquidity provider fees and gas

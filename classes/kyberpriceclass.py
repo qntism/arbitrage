@@ -30,4 +30,4 @@ class kyberprice:
 		afterslippage = getkyberprice(tokenarray[source][0], tokenarray[destination][0], amount)
 		output = str(useramount) + " " + source + " after slippage will get " + str(afterslippage) + " " + destination
 		return afterslippage
-
+#Need to calculate in liquidity provider fees and gas

@@ -37,7 +37,7 @@ def getuniswapprice(token1, token2, amount):
 if __name__ == '__main__':
     main()
 
-
+#Need to calculate in liquidity provider fees and gas
 
 
 

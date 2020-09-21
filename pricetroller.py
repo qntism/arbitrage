@@ -50,3 +50,4 @@ def main():
 	
 if __name__ == '__main__':
     main()
+#Need to calculate in liquidity provider fees and gas
