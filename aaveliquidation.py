@@ -3,6 +3,7 @@ from web3 import Web3
 
 r = requests.get('https://protocol-api.aave.com/liquidations?get=proto')
 data = json.loads(r.text)
+
 web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
 erc20abi = json.load(open('abi/erc20.json', 'r'))
 
