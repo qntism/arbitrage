@@ -4,7 +4,6 @@ from web3 import Web3
 #ethereum connection and erc20 ABI import
 web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
 erc20abi = json.load(open('abi/erc20.json', 'r'))
-ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
 #makes array of token addresses with the symbol and decimals

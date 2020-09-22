@@ -4,7 +4,6 @@ from web3 import Web3
 #ethereum connection and erc20 ABI import
 web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
 erc20abi = json.load(open('abi/erc20.json', 'r'))
-ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
 #makes array of token addresses with the symbol and decimals
@@ -13,9 +12,9 @@ tokenarray = {}
 for i in tokens: tokenarray[Web3.toChecksumAddress(i["address"].lower())] = (i["symbol"], 10**i["decimals"])
 
 #BZRX lending contract
-bzxlendingabi = json.load(open('abi/bZxProtocolLoanMaintenance.json', 'r'))
-bzxlendingcontract = Web3.toChecksumAddress('0xd8ee69652e4e4838f2531732a46d1f7f584f0b7f')
-bzxlending = web3.eth.contract(abi=bzxlendingabi, address=bzxlendingcontract)
+tokenabi = json.load(open('abi/.json', 'r'))
+daitokencontract = Web3.toChecksumAddress('0xd8ee69652e4e4838f2531732a46d1f7f584f0b7f')
+daitoken = web3.eth.contract(abi=bzxlendingabi, address=bzxlendingcontract)
 
 #BZRX inherited
 ibzxabi = json.load(open('abi/IBZx.json', 'r'))
