@@ -21,7 +21,7 @@ uniswap = web3.eth.contract(abi=uniswapabi, address=uniswapcontract)
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-amount = Web3.toWei(sys.argv[3], 'ETHER')
+amount = int(sys.argv[3])*(10**tokenarray[sys.argv[1]][1])
 
 def main():
 	afterslippage = getuniswapprice(tokenarray[sys.argv[1]][0], tokenarray[sys.argv[2]][0], amount)

@@ -1,0 +1,6 @@
+Borrow usdc, sell for eth on kyber, trade eth for usdc on uniswap. Try to calculate gas and fees
+
+figure out how to integrate curve finance.
+
+Look up all big money arbitrage patters and try and find a pattern
+

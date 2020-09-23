@@ -3,7 +3,7 @@ import requests, logging, json, os, time, sys
 from web3 import Web3
 
 class uniswapprice:
-	def main(source, destination, useramount):
+	def main(source, destination, amount):
 
 			tokens = json.load(open('abi/kyber_currencies.json', 'r'))["data"]
 			tokenarray = {}
@@ -12,7 +12,6 @@ class uniswapprice:
 
 			web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42'))
 			erc20abi = json.load(open('abi/erc20.json', 'r'))
-			amount = Web3.toWei(useramount, 'ETHER')
 
 			uniswapabi= json.load(open('abi/UniswapV2Router02.json', 'r'))
 			uniswapcontract = Web3.toChecksumAddress('0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D')
@@ -26,8 +25,8 @@ class uniswapprice:
 			
 			
 			def getuniswapprice(token1address, token2address, amount):
-				expectedreturn = uniswap.functions.getAmountsOut(amount, (token1address, token2address)).call({'from': baseaccount})[1]
-				return float(expectedreturn/10**tokenarray[destination][1])
+				expectedreturn = uniswap.functions.getAmountsOut(int(amount), (token1address, token2address)).call({'from': baseaccount})[1]
+				return expectedreturn
 
 
 			afterslippage = getuniswapprice(tokenarray[source][0], tokenarray[destination][0], amount)

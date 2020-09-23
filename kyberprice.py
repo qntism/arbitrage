@@ -21,19 +21,23 @@ kyberexchangerate = web3.eth.contract(abi=kyberrateabi, address=kyberratecontrac
 ethprovider_url = 'https://mainnet.infura.io/v3/4766db13619a4175aa7cf834d3eeae42' # infura project ID
 baseaccount = Web3.toChecksumAddress('0x2e9f3eb1e287b1081f4bc8ef5adbb80f063ae19e') # pubkey
 
-amount = Web3.toWei(sys.argv[3], 'ETHER')
-
+source = sys.argv[1]
+destination = sys.argv[2]
+amount = int(sys.argv[3])*(10**tokenarray[source][1])
+print(amount)
 def main():
-	afterslippage = getkyberprice(tokenarray[sys.argv[1]][0], tokenarray[sys.argv[2]][0], amount)
-	output = sys.argv[3] + " " + sys.argv[1] + " after slippage will get " + str(afterslippage) + " " + sys.argv[2]
+	afterslippage = getkyberprice(tokenarray[source][0], tokenarray[destination][0], amount)
+	output = sys.argv[3] + " " + source + " after slippage will get " + str(afterslippage) + " " + destination
 	print(output)
 
 def getkyberprice(token1address, token2address, amount):
-	expectedreturn = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})[0]
-	return (expectedreturn/10**18)*int(sys.argv[3])
+	
+	worstRate = kyberexchangerate.functions.getExpectedRate(token1address, token2address, amount).call({'from': baseaccount})[0]
+	return ((worstRate)/10**18)*int(sys.argv[3])
 
 if __name__ == '__main__':
     main()
 
-
+#                 100000000000000000
+100000000000000000000000000000000000
 #Need to calculate in liquidity provider fees and gas
