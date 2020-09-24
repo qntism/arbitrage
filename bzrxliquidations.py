@@ -34,29 +34,35 @@ unsafeloans = bzxlending.functions.getActiveLoans(0,1000000000, True).call({'fro
 #main function to loop through unhealthy loans and locate profitable liquidations
 def main():
 	#while True:
-	for loan in unsafeloans:
-		loanData = bzxlending.functions.getLoan(loan[0].hex()).call({'from': baseaccount})
-		loanId = loanData[0].hex()
-		endTimestamp = loanData[1]
-		loanToken = loanData[2]
-		collateralToken = loanData[3]
-		principalhex  = loanData[4]/tokenarray[loanToken][1]
-		collateral = loanData[5]
-		interestOwedPerDay = loanData[6]
-		interestDepositRemaining = loanData[7]
-		startRate = loanData[8]
-		startMargin = loanData[9]
-		maintenanceMargin = loanData[10]
-		currentMargin = loanData[11]
-		maxLoanTerm = loanData[12]
-		maxLiquidatable = loanData[13]
-		maxSeizable = loanData[14]
-		print("loan ID:",loanId)
-		print("loan token:",tokenarray[loanToken][0])
-		print("collateral token:",tokenarray[collateralToken][0])
-		print("principal amount:", str(principalhex))
-		#break
+	unsafeloans.sort(key=lambda x:x[4])
 	
+	for loan in unsafeloans:
+			loanData = bzxlending.functions.getLoan(loan[0].hex()).call({'from': baseaccount})
+			loanId = loanData[0].hex()
+			endTimestamp = loanData[1]
+			loanToken = loanData[2]
+			collateralToken = loanData[3]
+			principalhex  = loanData[4]/tokenarray[loanToken][1]
+			collateral = loanData[5]
+			interestOwedPerDay = loanData[6]
+			interestDepositRemaining = loanData[7]
+			startRate = loanData[8]
+			startMargin = loanData[9]
+			maintenanceMargin = loanData[10]
+			currentMargin = loanData[11]
+			maxLoanTerm = loanData[12]
+			maxLiquidatable = loanData[13]
+			maxSeizable = loanData[14]
+
+			#if tokenarray[loanToken][0] == "USDC" or tokenarray[loanToken][0] == "DAI" or tokenarray[loanToken][0] == "USDT":		
+			
+			print("loan ID:",loanId)
+
+			print("collateral token:",tokenarray[collateralToken][0])
+			print("principal amount:", str(principalhex),tokenarray[loanToken][0])
+			print("collateral amount:", str(collateral/tokenarray[collateralToken][1]),tokenarray[collateralToken][0])
+			#break
+
 
 #call main function
 if __name__ == '__main__':
